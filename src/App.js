@@ -6,6 +6,8 @@ import './App.css';
 import firebaseConfig from './firebase.config';
 
 
+
+
 firebase.initializeApp(firebaseConfig);
 function App() {
 
@@ -141,6 +143,30 @@ user.updateProfile({
 }
 
 
+const verifyEmail=()=>{
+  firebase.auth().currentUser.sendEmailVerification()
+  .then(() => {
+    // Email verification sent!
+    // ...
+  });
+}
+
+
+
+const resetpassword=email=>{
+  firebase.auth().sendPasswordResetEmail(email)
+  .then(() => {
+    // Password reset email sent!
+    // ..
+  })
+  .catch((error) => {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+   console.log(errorMessage,errorCode)
+  });
+}
+
+
   return (
     <div className="App">
       {
@@ -169,8 +195,10 @@ user.updateProfile({
      <br/>
      <input type="submit" value={newUser?'Sing UP':'Sing In'} />
      </form>
+     
+   <br/><button onClick={()=>resetpassword(user.email)}>Forget password</button>
      <p style={{color:'red'}}>{user.error}</p>
-     {user.success && <p style={{color:'green'}}>User {newUser?'Created' :'Logged In'} success</p>}
+     {user.success && <p style={{color:'green'}}>User {newUser?'Created' :'Logged In'} Success</p>}
     </div>
   );
 }
